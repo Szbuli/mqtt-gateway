@@ -22,6 +22,7 @@ import com.hivemq.client.mqtt.mqtt5.Mqtt5AsyncClient;
 import hu.szbuli.smarthome.can.CanReceiveThread;
 import hu.szbuli.smarthome.can.CanSendThread;
 import hu.szbuli.smarthome.gateway.heartbeat.HeartBeatService;
+import hu.szbuli.smarthome.lora.SocketManager;
 
 public class Main {
 
@@ -49,6 +50,8 @@ public class Main {
     CanReceiveThread canRecieveThread = new CanReceiveThread(gateway);
     canRecieveThread.start();
 
+    SocketManager loraSocketManager = new SocketManager();
+    loraSocketManager.start();
   }
 
   private static Mqtt5AsyncClient initMqttClient(String mqttConfigFile) throws FileNotFoundException, IOException {
