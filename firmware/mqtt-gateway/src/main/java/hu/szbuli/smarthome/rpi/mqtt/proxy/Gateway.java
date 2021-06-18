@@ -103,7 +103,7 @@ public class Gateway {
     } else {
       byte[] payload = toMqttPayload(canMessage, converter);
 
-      logger.debug("can message publishing to {}", mqttTopic);
+      logger.debug("can message publishing to {}", mqttTopic.getTopic());
 
       mqttManager.publishMqttMessage(mqttTopic.getTopic(), payload);
     }

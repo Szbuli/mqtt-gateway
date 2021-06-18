@@ -8,11 +8,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import hu.szbuli.smarthome.can.SafeThread;
 import hu.szbuli.smarthome.mqtt.MqttManager;
 import hu.szbuli.smarthome.rpi.mqtt.proxy.MqttConfiguration;
 
 public class HeartBeatService extends SafeThread {
+
+  private static final Logger logger = LoggerFactory.getLogger(HeartBeatService.class);
 
   private static final int MAX_IDLE_TIME_SECONDS = 70;
 
@@ -40,6 +45,7 @@ public class HeartBeatService extends SafeThread {
         while (it.hasNext()) {
           Entry<String, Instant> entry = it.next();
           if (Duration.between(entry.getValue(), currentTime).compareTo(Duration.ofSeconds(MAX_IDLE_TIME_SECONDS)) > 0) {
+            logger.debug("connected device went offline: {}", entry.getKey());
             it.remove();
             MqttManager mqttManager = gatewayClientMap.remove(entry.getKey());
             mqttManager.disconnect();
