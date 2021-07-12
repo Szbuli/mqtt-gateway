@@ -5,16 +5,16 @@ import configparser
 from rpi_status import RpiStatus
 from bme280 import BME280
 from tamper import Tamper
-from ads1115 import ADS1115
+from ina219 import INA219
 
 from timeloop import Timeloop
 from datetime import timedelta
 
 tl = Timeloop()
-rpi_status: RpiStatus
-bme_280: BME280
+rpi_status: RpiStatus = None
+bme_280: BME280 = None
 tamper: Tamper
-ads1115: ADS1115
+ina219: INA219 = None
 
 
 def start():
@@ -50,9 +50,9 @@ def start():
         tamper = Tamper(mqtt_client, config['sensors']['tamperTopic'])
         tamper.start()
 
-    if config.has_option('sensors','voltageTopic'):
-        global ads1115
-        ads1115 = ADS1115(mqtt_client, config['sensors']['voltageTopic'], config['sensors']['voltageMultiplier'])
+    if config.has_option('sensors','voltageTopic') and config.has_option('sensors', 'currentTopic') and config.has_option('sensors', 'powerTopic'):
+        global ina219
+        ina219 = INA219(mqtt_client, config['sensors']['voltageTopic'], config['sensors']['currentTopic'], config['sensors']['powerTopic'])
 
     tl.start()
 
@@ -67,8 +67,8 @@ def read_and_publish():
     if bme_280 != None:
         bme_280.read_and_publish()
 
-    if ads1115 != None:
-        ads1115.read_and_publish()
+    if ina219 != None:
+        ina219.read_and_publish()
 
 
 if __name__ == '__main__':

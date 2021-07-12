@@ -14,4 +14,5 @@ tamperTopic=smarthome/rpi/dev/tamper
 temperatureTopic=smarthome/rpi/dev/temperature
 humidityTopic=smarthome/rpi/dev/humidity
 voltageTopic=smarthome/rpi/dev/voltage
-voltageMultiplier=4.44444
+currentTopic=smarthome/rpi/dev/current
+powerTopic=smarthome/rpi/dev/power
